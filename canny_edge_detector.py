@@ -6,8 +6,16 @@ from hysteresis import Hysteresis
 from nonmaximum_suppression import NonMaximumSuppression
 from picture import Picture
 
+
 class CannyEdgeDetector:
-    def __init__(self, url, sigma=0.84049642, kernel_size=9, lower_threshold=50, upper_threshold=100):
+    def __init__(
+        self,
+        url,
+        sigma=0.84049642,
+        kernel_size=9,
+        lower_threshold=50,
+        upper_threshold=100,
+    ):
         self.picture = Picture(url)
         self.gaussian_blur = GaussianBlur(sigma, kernel_size)
         self.intensities = self.gaussian_blur.apply(self.picture)
@@ -15,7 +23,9 @@ class CannyEdgeDetector:
         magnitudes, angles = self.gradient_calculator.get_magnitudes_and_angles()
         self.nonmaximum_suppression = NonMaximumSuppression(magnitudes, angles)
         thinned = self.nonmaximum_suppression.apply_suppression()
-        self.double_thresholding = DoubleThresholding(thinned, lower_threshold, upper_threshold)
+        self.double_thresholding = DoubleThresholding(
+            thinned, lower_threshold, upper_threshold
+        )
         mapping = self.double_thresholding.apply()
         self.hysteresis = Hysteresis(thinned, mapping)
         self.strong_edges = self.hysteresis.apply()
