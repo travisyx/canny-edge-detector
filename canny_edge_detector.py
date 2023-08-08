@@ -14,7 +14,7 @@ class CannyEdgeDetector:
         sigma=0.84049642,
         kernel_size=9,
         lower_threshold=50,
-        upper_threshold=100,
+        upper_threshold=125,
     ):
         self.picture = Picture(url)
         self.gaussian_blur = GaussianBlur(sigma, kernel_size)
